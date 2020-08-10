@@ -1,5 +1,5 @@
 .idea
 CoreTaskTemplate/pom.xml
 CoreTaskTemplate/src/test/
-CoreTaskTemplate
+CoreTaskTemplate/src/main
 lib
