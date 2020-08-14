@@ -1,18 +1,12 @@
 package jm.task.core.jdbc.util;
 
 import jm.task.core.jdbc.model.User;
-import org.hibernate.Hibernate;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
 import org.hibernate.service.ServiceRegistry;
-import org.hibernate.service.StandardServiceInitiators;
 
-//import javax.security.auth.login.AppConfigurationEntry;
-//import javax.security.auth.login.Configuration;
-import java.lang.annotation.Annotation;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -29,13 +23,13 @@ public class Util {
     static  {
         try {
             Properties prop = new Properties();
-            prop.put(Environment.URL,"jdbc:mysql://localhost:3306/javalearn");
+            prop.put(Environment.URL,"jdbc:mysql://localhost:3306/javalearn?useSSL=false&useUnicode=true&serverTimezone=UTC");
             prop.put(Environment.USER,"mysql" );
             prop.put(Environment.PASS, "mysql");
             prop.put(Environment.DRIVER, "com.mysql.jdbc.Driver");
             prop.put(Environment.SHOW_SQL, true);
             prop.put(Environment.HBM2DDL_AUTO, "update");
-            prop.put(Environment.DIALECT,"org.hibernate.dialect.MySQLDialect");
+            prop.put(Environment.DIALECT,"org.hibernate.dialect.MySQL5Dialect");
 
             Configuration configuration = new Configuration().setProperties(prop);
             System.out.println(configuration.getProperties());
@@ -47,8 +41,8 @@ public class Util {
 
             sessionFactory = configuration.buildSessionFactory(builder.build());
         } catch (Exception e) {
-//            System.out.println("Исключение!" + e);
-                e.printStackTrace();
+            System.out.println("Исключение!" + e);
+//                e.printStackTrace();
         }
     }
     public static SessionFactory getSessionFactory() {
@@ -63,7 +57,7 @@ public class Util {
         return getMySQLConnection(hostName, dbName, userName, password);
     }
     private static Connection getMySQLConnection(String hostName, String dbName, String userName, String password) throws SQLException {
-        String conUrl = "jdbc:mysql://" + hostName + ":3306/" + dbName;
+        String conUrl = "jdbc:mysql://" + hostName + ":3306/" + dbName + "?verifyServerCertificate=false&useSSL=false&requireSSL=false&serverTimezone=UTC";
         return DriverManager.getConnection(conUrl, userName, password);
     }
 }

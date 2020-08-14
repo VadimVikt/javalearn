@@ -16,7 +16,7 @@ public class Main {
     public static void main(String[] args) throws SQLException {
         Util.getSessionFactory();
 //        UserServiceImpl userService = new UserServiceImpl();
-        //Создание таблицы
+//        //Создание таблицы
 //        userService.createUsersTable();
 //        //Добавление 4 юзеров в таблицу
 //        List<User> users = new ArrayList<>();
