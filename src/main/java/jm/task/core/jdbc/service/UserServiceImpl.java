@@ -1,42 +1,42 @@
 package jm.task.core.jdbc.service;
 
+import jm.task.core.jdbc.dao.UserDaoHibernateImpl;
 import jm.task.core.jdbc.dao.UserDaoJDBCImpl;
 import jm.task.core.jdbc.model.User;
-import jm.task.core.jdbc.util.Util;
 
-import java.sql.*;
-import java.util.ArrayList;
+import java.sql.SQLException;
 import java.util.List;
 
 public class UserServiceImpl implements UserService {
-    public void createUsersTable() throws SQLException {
-        UserDaoJDBCImpl usersTable = new UserDaoJDBCImpl();
-        usersTable.createUsersTable();
+
+    UserDaoHibernateImpl us;
+
+    public UserServiceImpl() {
+        this.us = new UserDaoHibernateImpl();
     }
 
-    public void dropUsersTable() throws SQLException {
-        UserDaoJDBCImpl usersTable = new UserDaoJDBCImpl();
-        usersTable.dropUsersTable();
+    @Override   // {        us.createUsersTable();    }
+    public void createUsersTable()  {
+        us.createUsersTable();
     }
 
-    public void saveUser(String name, String lastName, byte age) throws SQLException {
-        UserDaoJDBCImpl newUser = new UserDaoJDBCImpl();
-        newUser.saveUser(name, lastName, age);
+    public void dropUsersTable() {
+        us.dropUsersTable();
+    }
+
+    public void saveUser(String name, String lastName, byte age)  {
+        us.saveUser(name, lastName, age);
     }
 
     public void removeUserById(long id) {
-        UserDaoJDBCImpl remUs = new UserDaoJDBCImpl();
-        remUs.removeUserById(id);
+        us.removeUserById(id);
     }
 
-    public List<User> getAllUsers() throws SQLException {
-        UserDaoJDBCImpl allUsers = new UserDaoJDBCImpl();
-        return allUsers.getAllUsers();
+    public List<User> getAllUsers()  {
+        return us.getAllUsers();
     }
 
-    public void cleanUsersTable() throws SQLException {
-        UserDaoJDBCImpl cleanTable = new UserDaoJDBCImpl();
-        cleanTable.cleanUsersTable();
-
+    public void cleanUsersTable() {
+       us.cleanUsersTable();
     }
 }

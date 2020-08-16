@@ -16,36 +16,30 @@ public class Util {
     // реализуйте настройку соеденения с БД
     //В класс Util должна быть добавлена конфигурация для Hibernate ( рядом с JDBC)
     //Настройки Hibernate
+    private static SessionFactory sessionFactory;
 
-    private static SessionFactory sessionFactory = null;
-    private static ServiceRegistry serviceRegistry;
-
-    static  {
-        try {
-            Properties prop = new Properties();
-            prop.put(Environment.URL,"jdbc:mysql://localhost:3306/javalearn?useSSL=false&useUnicode=true&serverTimezone=UTC");
-            prop.put(Environment.USER,"mysql" );
-            prop.put(Environment.PASS, "mysql");
-            prop.put(Environment.DRIVER, "com.mysql.jdbc.Driver");
-            prop.put(Environment.SHOW_SQL, true);
-            prop.put(Environment.HBM2DDL_AUTO, "update");
-            prop.put(Environment.DIALECT,"org.hibernate.dialect.MySQL5Dialect");
-
-            Configuration configuration = new Configuration().setProperties(prop);
-            System.out.println(configuration.getProperties());
-            configuration.addAnnotatedClass(User.class);
-            // через интерфейс ServiceRegistry и потом класс
-//                serviceRegistry = new StandardServiceRegistryBuilder().applySetting(configuration.getProperties()).build();
-            StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder()
-                    .applySettings(configuration.getProperties());
-
-            sessionFactory = configuration.buildSessionFactory(builder.build());
-        } catch (Exception e) {
-            System.out.println("Исключение!" + e);
-//                e.printStackTrace();
-        }
-    }
     public static SessionFactory getSessionFactory() {
+        if (sessionFactory == null) {
+            try {
+                Configuration configuration = new Configuration();
+                Properties settings = new Properties();
+                settings.put(Environment.DIALECT, "org.hibernate.dialect.MySQL5Dialect");
+                settings.put(Environment.URL, "jdbc:mysql://localhost:3306/javalearn?useSSL=false&useUnicode=true&serverTimezone=UTC");
+                settings.put(Environment.DRIVER, "com.mysql.jdbc.Driver");
+                settings.put(Environment.USER, "mysql");
+                settings.put(Environment.PASS, "mysql");
+                settings.put(Environment.SHOW_SQL, "true");
+                settings.put(Environment.HBM2DDL_AUTO, "update");
+                configuration.setProperties(settings);
+
+                configuration.addAnnotatedClass(User.class);
+                ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
+                        .applySettings(configuration.getProperties()).build();
+                sessionFactory = configuration.buildSessionFactory(serviceRegistry);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
         return sessionFactory;
     }
 
@@ -56,6 +50,7 @@ public class Util {
         String password = "mysql";
         return getMySQLConnection(hostName, dbName, userName, password);
     }
+
     private static Connection getMySQLConnection(String hostName, String dbName, String userName, String password) throws SQLException {
         String conUrl = "jdbc:mysql://" + hostName + ":3306/" + dbName + "?verifyServerCertificate=false&useSSL=false&requireSSL=false&serverTimezone=UTC";
         return DriverManager.getConnection(conUrl, userName, password);
