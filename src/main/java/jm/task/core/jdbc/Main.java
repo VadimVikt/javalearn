@@ -13,7 +13,7 @@ public class Main {
         UserServiceImpl userService = new UserServiceImpl();
         //Создание таблицы
         userService.createUsersTable();
-//        //Добавление 4 юзеров в таблицу
+        //Добавление 4 юзеров в таблицу
         List<User> users = new ArrayList<>();
         users.add(new User("Jhon", "Smith", (byte) 32));
         users.add(new User("Ivan", "Petrov", (byte) 18));

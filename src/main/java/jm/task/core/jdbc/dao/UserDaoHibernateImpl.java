@@ -23,9 +23,8 @@ public class UserDaoHibernateImpl implements UserDao {
         try {
             String sql;
             sql = "CREATE TABLE IF NOT EXISTS users ( `id` BIGINT NOT NULL AUTO_INCREMENT , `name` VARCHAR(50) NOT NULL , `last_name` VARCHAR(50) NOT NULL , `age` TINYINT NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB";
-
             session.beginTransaction();
-            session.createSQLQuery(sql);
+            session.createSQLQuery(sql).executeUpdate();
             session.getTransaction().commit();
         } catch (Exception e) {
             session.getTransaction().rollback();
@@ -114,8 +113,10 @@ public class UserDaoHibernateImpl implements UserDao {
         SessionFactory sessionFactory =  Util.getSessionFactory();
         Session session = sessionFactory.openSession();
         try {
+            String sql;
+            sql = "truncate table  `javalearn` . users;";
             session.beginTransaction();
-            session.clear();
+            session.createSQLQuery(sql).executeUpdate();
             session.getTransaction().commit();
         } catch (Exception e) {
             session.getTransaction().rollback();
